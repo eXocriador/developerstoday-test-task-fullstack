@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 const CreateQuizPage = () => {
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <div className="space-y-3">
         <p className="text-xs uppercase tracking-[0.3em] text-cyan-300/80">Builder</p>
         <h1 className="text-3xl font-semibold text-white">Create a new quiz</h1>
@@ -17,7 +17,7 @@ const CreateQuizPage = () => {
         </p>
       </div>
 
-      <div className="rounded-3xl border border-white/10 bg-slate-900/60 p-6 shadow-2xl shadow-cyan-500/10">
+      <div className="rounded-3xl border border-white/10 bg-slate-950/60 p-8 shadow-2xl shadow-cyan-500/10">
         <QuizBuilderForm />
       </div>
     </div>
@@ -25,4 +25,3 @@ const CreateQuizPage = () => {
 };
 
 export default CreateQuizPage;
-

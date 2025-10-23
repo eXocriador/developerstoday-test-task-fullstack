@@ -1,12 +1,20 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  type MouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import dayjs from 'dayjs';
 import { apiFetch, ApiClientError } from '../../lib/api';
 import type { QuizSummary } from '../../types/quiz';
 
 const QuizListView = () => {
+  const router = useRouter();
   const [quizzes, setQuizzes] = useState<QuizSummary[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +42,8 @@ const QuizListView = () => {
   }, [loadQuizzes]);
 
   const handleDelete = useCallback(
-    async (id: number) => {
+    async (id: number, event?: MouseEvent<HTMLButtonElement>) => {
+      event?.stopPropagation();
       setDeletingId(id);
       try {
         await apiFetch<void>(`/quizzes/${id}`, { method: 'DELETE', parseJson: false });
@@ -90,17 +99,23 @@ const QuizListView = () => {
             {quizzes.map((quiz) => (
               <li
                 key={quiz.id}
-                className="group flex flex-col justify-between rounded-2xl border border-white/5 bg-slate-950/40 p-5 transition hover:border-cyan-400/60 hover:bg-slate-900/70"
+                role="button"
+                tabIndex={0}
+                onClick={() => router.push(`/quizzes/${quiz.id}`)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    router.push(`/quizzes/${quiz.id}`);
+                  }
+                }}
+                className="group flex cursor-pointer flex-col justify-between rounded-2xl border border-white/5 bg-slate-950/40 p-5 transition hover:-translate-y-0.5 hover:border-cyan-400/70 hover:bg-slate-900/70 hover:shadow-lg hover:shadow-cyan-500/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70"
               >
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <Link
-                        href={`/quizzes/${quiz.id}`}
-                        className="text-lg font-semibold text-white transition hover:text-cyan-300"
-                      >
+                      <p className="text-lg font-semibold text-white transition group-hover:text-cyan-300">
                         {quiz.title}
-                      </Link>
+                      </p>
                       <p className="mt-1 text-xs uppercase tracking-wide text-cyan-300/80">
                         {quiz.questionCount} {quiz.questionCount === 1 ? 'question' : 'questions'}
                       </p>
@@ -108,10 +123,11 @@ const QuizListView = () => {
                     <button
                       type="button"
                       disabled={deletingId === quiz.id}
-                      onClick={() => handleDelete(quiz.id)}
-                      className="rounded-full border border-red-500/30 px-3 py-1 text-xs font-semibold text-red-300 transition hover:border-red-400 hover:text-red-200 disabled:cursor-not-allowed disabled:opacity-50"
+                      onClick={(event) => handleDelete(quiz.id, event)}
+                      className="flex h-9 w-9 items-center justify-center rounded-full border border-red-400/40 bg-red-500/10 text-lg font-semibold text-red-200 transition hover:border-red-400 hover:bg-red-500/30 hover:text-red-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60 disabled:cursor-not-allowed disabled:opacity-50"
+                      aria-label={`Delete ${quiz.title}`}
                     >
-                      {deletingId === quiz.id ? 'Deleting...' : 'Delete'}
+                      {deletingId === quiz.id ? '…' : '×'}
                     </button>
                   </div>
                   <p className="text-xs text-slate-400">
@@ -119,12 +135,9 @@ const QuizListView = () => {
                   </p>
                 </div>
                 <div className="mt-4 flex items-center justify-between text-xs text-slate-400">
-                  <Link
-                    href={`/quizzes/${quiz.id}`}
-                    className="font-medium text-cyan-300 transition hover:text-cyan-200"
-                  >
+                  <span className="font-medium text-cyan-300 transition group-hover:text-cyan-200">
                     View details
-                  </Link>
+                  </span>
                 </div>
               </li>
             ))}
@@ -136,4 +149,3 @@ const QuizListView = () => {
 };
 
 export default QuizListView;
-
