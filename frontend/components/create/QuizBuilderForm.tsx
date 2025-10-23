@@ -15,8 +15,7 @@ import {
 } from 'react-hook-form';
 import { z } from 'zod';
 import { apiFetch, ApiClientError } from '../../lib/api';
-
-const QUESTION_TYPES = ['BOOLEAN', 'INPUT', 'CHECKBOX'] as const;
+import { QUESTION_TYPES } from '../../types/quiz';
 
 const optionSchema = z.object({
   id: z.string(),

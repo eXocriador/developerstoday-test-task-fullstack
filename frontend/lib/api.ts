@@ -34,6 +34,7 @@ export const apiFetch = async <T>(
 ): Promise<T> => {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...init,
+    cache: init.cache ?? 'no-store',
     headers: {
       'Content-Type': 'application/json',
       ...headers,
@@ -60,4 +61,3 @@ export const apiFetch = async <T>(
 };
 
 export { ApiClientError, API_BASE_URL };
-

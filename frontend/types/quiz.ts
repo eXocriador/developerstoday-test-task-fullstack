@@ -1,4 +1,6 @@
-export type QuestionType = 'BOOLEAN' | 'INPUT' | 'CHECKBOX';
+export const QUESTION_TYPES = ['BOOLEAN', 'INPUT', 'CHECKBOX'] as const;
+
+export type QuestionType = (typeof QUESTION_TYPES)[number];
 
 export interface QuizOption {
   id: number;
@@ -35,4 +37,3 @@ export interface ApiError {
   message: string;
   errors?: unknown;
 }
-
