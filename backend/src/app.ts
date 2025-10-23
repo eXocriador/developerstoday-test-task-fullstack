@@ -1,7 +1,7 @@
 import cors from 'cors';
-import express from 'express';
+import express, { type Express } from 'express';
 
-const app = express();
+const app: Express = express();
 
 app.use(cors());
 app.use(express.json());
@@ -11,4 +11,3 @@ app.get('/health', (_req, res) => {
 });
 
 export default app;
-
