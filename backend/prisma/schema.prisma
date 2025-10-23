@@ -7,3 +7,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Quiz {
+  id        Int        @id @default(autoincrement())
+  title     String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  questions Question[]
+}
+
+model Question {
+  id            Int              @id @default(autoincrement())
+  text          String
+  type          QuestionType
+  order         Int?
+  booleanAnswer Boolean?
+  inputAnswer   String?
+  quizId        Int
+  quiz          Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options       QuestionOption[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+}
+
+model QuestionOption {
+  id         Int      @id @default(autoincrement())
+  text       String
+  isCorrect  Boolean  @default(false)
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+enum QuestionType {
+  BOOLEAN
+  INPUT
+  CHECKBOX
+}

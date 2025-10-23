@@ -22,6 +22,11 @@ export default tseslint.config(
       },
     },
     rules: {
+      'no-console': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-unsafe-call': 'off',
       '@typescript-eslint/no-misused-promises': [
         'error',
