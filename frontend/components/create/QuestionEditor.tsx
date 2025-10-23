@@ -55,31 +55,28 @@ const QuestionEditor = ({
   const inputError = errors.questions?.[index]?.inputAnswer;
 
   return (
-    <div className="space-y-6 rounded-3xl border border-white/12 bg-slate-950/70 p-6 shadow-xl shadow-cyan-500/10 transition hover:border-cyan-400/30">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="w-full">
-          <div className="flex items-center gap-3">
-            <p className="text-[0.65rem] uppercase tracking-[0.4em] text-cyan-300/70">
-              Question #{index + 1}
-            </p>
-            <button
-              type="button"
-              onClick={() => removeQuestion(index)}
-              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-rose-400/40 bg-rose-500/10 text-lg text-rose-200 transition hover:border-rose-300 hover:bg-rose-500/25 hover:text-rose-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/50"
-              aria-label={`Remove question ${index + 1}`}
-            >
-              ×
-            </button>
-          </div>
-          <input
-            {...register(`questions.${index}.text`)}
-            placeholder="What is the question?"
-            className="mt-3 w-full rounded-2xl border border-white/12 bg-slate-950/60 px-4 py-3 text-base text-white placeholder:text-slate-500 transition focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/25"
-          />
-          {textError && (
-            <p className="text-sm text-rose-300">{textError.message}</p>
-          )}
-        </div>
+    <div className="relative space-y-6 rounded-3xl border border-white/12 bg-slate-950/70 px-7 pb-7 pt-12 shadow-xl shadow-cyan-500/10 transition hover:border-cyan-400/30">
+      <button
+        type="button"
+        onClick={() => removeQuestion(index)}
+        className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full border border-rose-400/40 bg-rose-500/10 text-base text-rose-200 transition hover:border-rose-300 hover:bg-rose-500/25 hover:text-rose-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/50 sm:right-6 sm:top-6 sm:h-10 sm:w-10 sm:text-lg"
+        aria-label={`Remove question ${index + 1}`}
+      >
+        ×
+      </button>
+
+      <div className="w-full">
+        <p className="text-[0.65rem] uppercase tracking-[0.4em] text-cyan-300/70">
+          Question #{index + 1}
+        </p>
+        <input
+          {...register(`questions.${index}.text`)}
+          placeholder="What is the question?"
+          className="mt-3 w-full rounded-2xl border border-white/12 bg-slate-950/60 px-4 py-3 text-base text-white placeholder:text-slate-500 transition focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/25"
+        />
+        {textError && (
+          <p className="text-sm text-rose-300">{textError.message}</p>
+        )}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
@@ -254,4 +251,3 @@ const QuestionEditor = ({
 };
 
 export default QuestionEditor;
-
