@@ -1,11 +1,8 @@
 import cors from 'cors';
-import express, {
-  type Express,
-  type NextFunction,
-  type Request,
-  type Response,
-} from 'express';
+import express, { type Express } from 'express';
 import quizzesRouter from './routes/quizzes';
+import errorHandler from './middlewares/errorHandler';
+import AppError from './errors/AppError';
 
 const app: Express = express();
 
@@ -18,18 +15,10 @@ app.get('/health', (_req, res) => {
 
 app.use('/quizzes', quizzesRouter);
 
-app.use(
-  (
-    error: unknown,
-    _req: Request,
-    res: Response,
-    _next: NextFunction
-  ): Response => {
-    console.error(error);
-    return res.status(500).json({
-      message: 'Internal server error. Please try again later.',
-    });
-  }
-);
+app.use((_req, _res, next) => {
+  next(new AppError(404, 'Route not found'));
+});
+
+app.use(errorHandler);
 
 export default app;
